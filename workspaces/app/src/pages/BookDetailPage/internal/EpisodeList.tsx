@@ -13,9 +13,10 @@ import { BottomNavigator } from './BottomNavigator';
 
 type Props = {
   bookId: string;
+  isShownNavbar?: boolean;
 };
 
-const EpisodeList: React.FC<Props> = ({ bookId }) => {
+const EpisodeList: React.FC<Props> = ({ bookId, isShownNavbar = false }) => {
   const { data: episodeList } = useEpisodeList({ query: { bookId } });
 
   const latestEpisode = useMemo(() => episodeList?.find((episode) => episode.chapter === 1), [episodeList]);
@@ -28,12 +29,14 @@ const EpisodeList: React.FC<Props> = ({ bookId }) => {
 
   return (
     <>
-      <BottomNavigator
-        bookId={bookId}
-        isFavorite={isFavorite}
-        latestEpisodeId={latestEpisode?.id ?? ''}
-        onClickFav={handleFavClick}
-      />
+      {isShownNavbar && (
+        <BottomNavigator
+          bookId={bookId}
+          isFavorite={isFavorite}
+          latestEpisodeId={latestEpisode?.id ?? ''}
+          onClickFav={handleFavClick}
+        />
+      )}
       <Flex align="center" as="ul" direction="column" justify="center" width="100%">
         {episodeList.map((episode) => (
           <Suspense key={episode.id} fallback={null}>

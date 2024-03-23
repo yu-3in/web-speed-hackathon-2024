@@ -89,7 +89,7 @@ const BookDetailPage: React.FC = () => {
 
       <section aria-label="エピソード一覧">
         <Suspense fallback={null}>
-          <EpisodeList bookId={bookId} />
+          <EpisodeList isShownNavbar bookId={bookId} />
         </Suspense>
       </section>
     </Box>
