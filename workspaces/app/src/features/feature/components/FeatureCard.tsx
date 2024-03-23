@@ -88,3 +88,18 @@ const FeatureCardWithSuspense: React.FC<Props> = (props) => {
 };
 
 export { FeatureCardWithSuspense as FeatureCard };
+
+export const FeatureCardSkeleton: React.FC = () => {
+  return (
+    <div
+      style={{
+        border: `1px solid ${Color.MONO_30}`,
+        borderRadius: Radius.SMALL,
+        flexShrink: 0,
+        height: '180px',
+        padding: '12px',
+        width: '304px',
+      }}
+    />
+  );
+};

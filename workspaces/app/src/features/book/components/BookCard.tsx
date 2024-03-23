@@ -75,3 +75,17 @@ const BookCardWithSuspense: React.FC<Props> = (props) => {
 };
 
 export { BookCardWithSuspense as BookCard };
+
+export const BookCardSkeleton: React.FC = () => {
+  return (
+    <div
+      style={{
+        border: `1px solid ${Color.MONO_30}`,
+        borderRadius: Radius.SMALL,
+        flexShrink: 0,
+        height: '180px',
+        width: '192px',
+      }}
+    />
+  );
+};

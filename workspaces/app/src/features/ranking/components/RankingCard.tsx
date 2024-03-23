@@ -15,6 +15,7 @@ import { Color, Radius, Space, Typography } from '../../../foundation/styles/var
 
 const _Wrapper = styled.li`
   width: 100%;
+  list-style: none;
 `;
 
 const _Link = styled(Link)`
@@ -119,3 +120,7 @@ const RankingCardWithSuspense: React.FC<Props> = (props) => {
 };
 
 export { RankingCardWithSuspense as RankingCard };
+
+export const RankingCardSkeleton: React.FC = () => {
+  return <li style={{ height: '155px', width: '100%' }} />;
+};

@@ -41,6 +41,7 @@ type Props = {
   flexGrow?: CSS.Property.FlexGrow;
   flexShrink?: CSS.Property.FlexShrink;
   gap?: number;
+  height?: number | string;
   justify: CSS.Property.JustifyContent;
   p?: number;
   pb?: number;
@@ -60,6 +61,7 @@ export const Flex: React.FC<Props> = ({
   flexGrow,
   flexShrink,
   gap,
+  height,
   justify,
   p,
   pb,
@@ -87,6 +89,7 @@ export const Flex: React.FC<Props> = ({
       $px={px}
       $py={py}
       as={as}
+      style={{ height }}
     >
       {children}
     </_Flex>
