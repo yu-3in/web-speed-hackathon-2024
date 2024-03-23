@@ -2,7 +2,6 @@ import { Suspense, useId } from 'react';
 
 import { Box } from '../../foundation/components/Box';
 import { Flex } from '../../foundation/components/Flex';
-import { Spacer } from '../../foundation/components/Spacer';
 import { Text } from '../../foundation/components/Text';
 import { Color, Space, Typography } from '../../foundation/styles/variables';
 
