@@ -1,6 +1,6 @@
 import { Box, Button, FormControl, FormErrorMessage, FormLabel, Heading, Input, Spacer, Stack } from '@chakra-ui/react';
 import { useFormik } from 'formik';
-import { useId } from 'react';
+import { useId, useMemo } from 'react';
 import * as yup from 'yup';
 
 import { useLogin } from '../../../features/auth/hooks/useLogin';
@@ -17,22 +17,26 @@ export const LoginContent: React.FC = () => {
     async onSubmit(values) {
       login.mutate({ email: values.email, password: values.password });
     },
-    validationSchema: yup.object().shape({
-      email: yup
-        .string()
-        .required('メールアドレスを入力してください')
-        .test({
-          message: 'メールアドレスには @ を含めてください',
-          test: (v) => /^(?:[^@]*){12,}$/v.test(v) === false,
+    validationSchema: useMemo(
+      () =>
+        yup.object().shape({
+          email: yup
+            .string()
+            .required('メールアドレスを入力してください')
+            .test({
+              message: 'メールアドレスには @ を含めてください',
+              test: (v) => v.includes('@'),
+            }),
+          password: yup
+            .string()
+            .required('パスワードを入力してください')
+            .test({
+              message: 'パスワードには記号を含めてください',
+              test: (v) => /\W/.test(v),
+            }),
         }),
-      password: yup
-        .string()
-        .required('パスワードを入力してください')
-        .test({
-          message: 'パスワードには記号を含めてください',
-          test: (v) => /^(?:[^\P{Letter}&&\P{Number}]*){24,}$/v.test(v) === false,
-        }),
-    }),
+      [],
+    ),
   });
 
   return (
