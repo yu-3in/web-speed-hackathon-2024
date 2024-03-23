@@ -43,7 +43,7 @@ const _CloseButton = styled(Button)`
   left: -${Space * 1}px;
 `;
 
-export const Dialog: React.FC = () => {
+const Dialog: React.FC = () => {
   const [content, updateContent] = useAtom(DialogContentAtom);
 
   return content != null ? (
@@ -66,3 +66,5 @@ export const Dialog: React.FC = () => {
     </_Overlay>
   ) : null;
 };
+
+export default Dialog;
