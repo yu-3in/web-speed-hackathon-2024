@@ -88,11 +88,9 @@ const BookDetailPage: React.FC = () => {
       <Separator />
 
       <section aria-label="エピソード一覧">
-        <Flex align="center" as="ul" direction="column" justify="center">
-          <Suspense fallback={null}>
-            <EpisodeList bookId={bookId} />
-          </Suspense>
-        </Flex>
+        <Suspense fallback={null}>
+          <EpisodeList bookId={bookId} />
+        </Suspense>
       </section>
     </Box>
   );

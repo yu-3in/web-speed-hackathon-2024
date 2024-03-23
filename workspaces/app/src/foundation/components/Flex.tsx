@@ -51,6 +51,7 @@ type Props = {
   pt?: number;
   px?: number;
   py?: number;
+  width?: number | string;
 };
 
 export const Flex: React.FC<Props> = ({
@@ -71,6 +72,7 @@ export const Flex: React.FC<Props> = ({
   pt,
   px,
   py,
+  width,
 }) => {
   return (
     <_Flex
@@ -89,7 +91,7 @@ export const Flex: React.FC<Props> = ({
       $px={px}
       $py={py}
       as={as}
-      style={{ height }}
+      style={{ height, width }}
     >
       {children}
     </_Flex>

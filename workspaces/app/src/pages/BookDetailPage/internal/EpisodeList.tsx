@@ -34,11 +34,10 @@ const EpisodeList: React.FC<Props> = ({ bookId }) => {
         latestEpisodeId={latestEpisode?.id ?? ''}
         onClickFav={handleFavClick}
       />
-      <Flex align="center" as="ul" direction="column" justify="center">
+      <Flex align="center" as="ul" direction="column" justify="center" width="100%">
         {episodeList.map((episode) => (
           <Suspense key={episode.id} fallback={null}>
-            {' '}
-            <EpisodeListItem bookId={bookId} episodeId={episode.id} />
+            <EpisodeListItem bookId={bookId} episode={episode} />
           </Suspense>
         ))}
         {episodeList.length === 0 && (
