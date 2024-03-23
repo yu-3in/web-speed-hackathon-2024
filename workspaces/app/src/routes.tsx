@@ -32,7 +32,7 @@ export const Router: React.FC = () => {
         element={
           <ActionLayout
             leftContent={
-              <_BackToTopButton href={'/'}>
+              <_BackToTopButton to={'/'}>
                 <svg
                   aria-hidden="true"
                   className="svg-icon"

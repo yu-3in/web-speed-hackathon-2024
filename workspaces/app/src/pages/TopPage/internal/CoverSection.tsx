@@ -43,7 +43,7 @@ export const CoverSection: React.FC = () => {
       <_ImageWrapper>
         <_Image alt="Cyber TOON" src="/assets/hero.avif" />
       </_ImageWrapper>
-      <_SearchLink href="/search">
+      <_SearchLink to="/search">
         <svg
           aria-hidden="true"
           className="svg-icon"
