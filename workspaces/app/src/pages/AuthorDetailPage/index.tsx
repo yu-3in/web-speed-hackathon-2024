@@ -2,7 +2,6 @@ import { Suspense, useId } from 'react';
 import { useParams } from 'react-router-dom';
 import type { RouteParams } from 'regexparam';
 import { styled } from 'styled-components';
-import invariant from 'tiny-invariant';
 
 import { useAuthor } from '../../features/author/hooks/useAuthor';
 import { BookListItem } from '../../features/book/components/BookListItem';
@@ -14,6 +13,7 @@ import { Spacer } from '../../foundation/components/Spacer';
 import { Text } from '../../foundation/components/Text';
 import { useImage } from '../../foundation/hooks/useImage';
 import { Color, Space, Typography } from '../../foundation/styles/variables';
+import { BookList } from '../../features/book/components/BookList';
 
 const _HeadingWrapper = styled.section`
   display: grid;
@@ -33,9 +33,8 @@ const _AuthorImageWrapper = styled.div`
 
 const AuthorDetailPage: React.FC = () => {
   const { authorId } = useParams<RouteParams<'/authors/:authorId'>>();
-  invariant(authorId);
 
-  const { data: author } = useAuthor({ params: { authorId } });
+  const { data: author } = useAuthor({ params: { authorId: authorId || '' } });
 
   const imageUrl = useImage({ height: 128, imageId: author.image.id, width: 128 });
   const bookListA11yId = useId();
@@ -66,19 +65,7 @@ const AuthorDetailPage: React.FC = () => {
 
         <Spacer height={Space * 2} />
 
-        <Flex align="center" as="ul" direction="column" justify="center">
-          {author.books.map((book) => (
-            <BookListItem key={book.id} bookId={book.id} />
-          ))}
-          {author.books.length === 0 && (
-            <>
-              <Spacer height={Space * 2} />
-              <Text color={Color.MONO_100} typography={Typography.NORMAL14}>
-                この作者の作品はありません
-              </Text>
-            </>
-          )}
-        </Flex>
+        <BookList author={author} />
       </Box>
     </Box>
   );
