@@ -18,7 +18,7 @@ import {
   Tr,
 } from '@chakra-ui/react';
 import { useFormik } from 'formik';
-import React, { Suspense, useId, useMemo, useState } from 'react';
+import React, { Suspense, useCallback, useId, useMemo, useState } from 'react';
 import { create } from 'zustand';
 
 import { useAuthorList } from '../../features/authors/hooks/useAuthorList';
@@ -117,6 +117,13 @@ export const AuthorListPage: React.FC = () => {
   });
   const modalState = useModalStore();
 
+  const handleClick = useCallback(
+    (authorId: string) => {
+      modalState.openDetail(authorId);
+    },
+    [modalState],
+  );
+
   return (
     <>
       <Stack height="100%" p={4} spacing={6}>
@@ -189,7 +196,7 @@ export const AuthorListPage: React.FC = () => {
                 {filteredAuthorList.map((author) => (
                   <Tr key={author.id}>
                     <Td textAlign="center" verticalAlign="middle">
-                      <Button colorScheme="teal" onClick={() => modalState.openDetail(author.id)} variant="solid">
+                      <Button colorScheme="teal" onClick={() => handleClick(author.id)} variant="solid">
                         詳細
                       </Button>
                     </Td>
