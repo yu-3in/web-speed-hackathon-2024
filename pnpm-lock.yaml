@@ -56,9 +56,6 @@ importers:
       formik:
         specifier: 2.4.5
         version: 2.4.5(react@18.2.0)
-      framer-motion:
-        specifier: 10.16.5
-        version: 10.16.5(react-dom@18.2.0)(react@18.2.0)
       ky:
         specifier: 1.2.0
         version: 1.2.0
