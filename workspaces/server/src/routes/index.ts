@@ -4,6 +4,8 @@ import { cors } from 'hono/cors';
 import { HTTPException } from 'hono/http-exception';
 import { secureHeaders } from 'hono/secure-headers';
 
+import { cacheControlMiddleware } from '../middlewares/cacheControlMiddleware';
+
 import { adminApp } from './admin';
 import { apiApp } from './api';
 import { imageApp } from './image';
@@ -24,6 +26,7 @@ app.use(
 );
 
 app.use(compress());
+app.use(cacheControlMiddleware);
 
 app.get('/healthz', (c) => {
   return c.body('live', 200);
