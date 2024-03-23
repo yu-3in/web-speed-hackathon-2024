@@ -111,9 +111,6 @@ importers:
       jotai:
         specifier: 2.7.0
         version: 2.7.0(@types/react@18.2.0)(react@18.2.0)
-      moment-timezone:
-        specifier: 0.5.45
-        version: 0.5.45
       react:
         specifier: 18.2.0
         version: 18.2.0
