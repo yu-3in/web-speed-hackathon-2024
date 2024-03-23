@@ -21,12 +21,25 @@ async function loadHtmlTemplate(): Promise<string> {
   return cachedHtmlContent;
 }
 
-async function createHTML({ body, styleTags }: { body: string; styleTags: string }): Promise<string> {
+async function createHTML({
+  body,
+  path,
+  styleTags,
+}: {
+  body: string;
+  path: string;
+  styleTags: string;
+}): Promise<string> {
   const htmlContent = await loadHtmlTemplate();
+
+  // トップページの場合のみプリロードタグを追加
+  const preloadLink =
+    path === '/' ? '<link rel="preload" as="image" href="/assets/hero-1024.avif" type="image/avif" />' : '';
 
   const content = htmlContent
     .replaceAll('<div id="root"></div>', `<div id="root">${body}</div>`)
-    .replaceAll('<style id="tag"></style>', styleTags);
+    .replaceAll('<style id="tag"></style>', styleTags)
+    .replaceAll('</head>', `${preloadLink}</head>`); // </head> タグの直前にプリロードタグを挿入
 
   return content;
 }
@@ -44,7 +57,7 @@ app.get('*', async (c) => {
     );
 
     const styleTags = sheet.getStyleTags();
-    const html = await createHTML({ body, styleTags });
+    const html = await createHTML({ body, path: c.req.path, styleTags });
 
     return c.html(html);
   } catch (cause) {
