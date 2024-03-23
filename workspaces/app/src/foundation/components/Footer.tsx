@@ -1,5 +1,5 @@
 import { useSetAtom } from 'jotai';
-import React, { useCallback } from 'react';
+import React, { Suspense, useCallback } from 'react';
 import styled from 'styled-components';
 
 import { DialogContentAtom } from '../atoms/DialogContentAtom';
@@ -29,23 +29,43 @@ export const Footer: React.FC = () => {
   const updateDialogContent = useSetAtom(DialogContentAtom);
 
   const handleRequestToTermDialogOpen = useCallback(() => {
-    updateDialogContent(<TermDialog />);
+    updateDialogContent(
+      <Suspense fallback={null}>
+        <TermDialog />
+      </Suspense>,
+    );
   }, [updateDialogContent]);
 
   const handleRequestToContactDialogOpen = useCallback(() => {
-    updateDialogContent(<ContactDialog />);
+    updateDialogContent(
+      <Suspense fallback={null}>
+        <ContactDialog />
+      </Suspense>,
+    );
   }, [updateDialogContent]);
 
   const handleRequestToQuestionDialogOpen = useCallback(() => {
-    updateDialogContent(<QuestionDialog />);
+    updateDialogContent(
+      <Suspense fallback={null}>
+        <QuestionDialog />
+      </Suspense>,
+    );
   }, [updateDialogContent]);
 
   const handleRequestToCompanyDialogOpen = useCallback(() => {
-    updateDialogContent(<CompanyDialog />);
+    updateDialogContent(
+      <Suspense fallback={null}>
+        <CompanyDialog />
+      </Suspense>,
+    );
   }, [updateDialogContent]);
 
   const handleRequestToOverviewDialogOpen = useCallback(() => {
-    updateDialogContent(<OverviewDialog />);
+    updateDialogContent(
+      <Suspense fallback={null}>
+        <OverviewDialog />
+      </Suspense>,
+    );
   }, [updateDialogContent]);
 
   return (
