@@ -17,7 +17,9 @@ const ReleaseList: React.FC = () => {
     <Box maxWidth="100%" overflowX="scroll" overflowY="hidden">
       <Flex align="stretch" gap={Space * 2} justify="flex-start">
         {release.books.map((book) => (
-          <BookCard key={book.id} book={book} />
+          <Suspense key={book.id}>
+            <BookCard book={book} />
+          </Suspense>
         ))}
       </Flex>
     </Box>
