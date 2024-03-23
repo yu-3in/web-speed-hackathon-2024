@@ -1,27 +1,22 @@
 import { useSetAtom } from 'jotai';
-import React, { useId } from 'react';
+import React, { useCallback } from 'react';
 import styled from 'styled-components';
 
 import { DialogContentAtom } from '../atoms/DialogContentAtom';
-import { COMPANY } from '../constants/Company';
-import { CONTACT } from '../constants/Contact';
-import { OVERVIEW } from '../constants/Overview';
-import { QUESTION } from '../constants/Question';
-import { TERM } from '../constants/Term';
-import { Color, Space, Typography } from '../styles/variables';
+import { Color, Space } from '../styles/variables';
 
 import { Box } from './Box';
 import { Button } from './Button';
 import { Flex } from './Flex';
-import { Spacer } from './Spacer';
-import { Text } from './Text';
+
+const TermDialog = React.lazy(() => import('./internal/TermDialog'));
+const ContactDialog = React.lazy(() => import('./internal/ContactDialog'));
+const QuestionDialog = React.lazy(() => import('./internal/QuestionDialog'));
+const CompanyDialog = React.lazy(() => import('./internal/CompanyDialog'));
+const OverviewDialog = React.lazy(() => import('./internal/OverviewDialog'));
 
 const _Button = styled(Button)`
   color: ${Color.MONO_A};
-`;
-
-const _Content = styled.section`
-  white-space: pre-line;
 `;
 
 export const Footer: React.FC = () => {
@@ -31,83 +26,27 @@ export const Footer: React.FC = () => {
     setIsClient(true);
   }, []);
 
-  const termDialogA11yId = useId();
-  const contactDialogA11yId = useId();
-  const questionDialogA11yId = useId();
-  const companyDialogA11yId = useId();
-  const overviewDialogA11yId = useId();
-
   const updateDialogContent = useSetAtom(DialogContentAtom);
 
-  const handleRequestToTermDialogOpen = () => {
-    updateDialogContent(
-      <_Content aria-labelledby={termDialogA11yId} role="dialog">
-        <Text as="h2" color={Color.MONO_100} id={termDialogA11yId} typography={Typography.NORMAL16}>
-          利用規約
-        </Text>
-        <Spacer height={Space * 1} />
-        <Text as="p" color={Color.MONO_100} typography={Typography.NORMAL12}>
-          {TERM}
-        </Text>
-      </_Content>,
-    );
-  };
+  const handleRequestToTermDialogOpen = useCallback(() => {
+    updateDialogContent(<TermDialog />);
+  }, [updateDialogContent]);
 
-  const handleRequestToContactDialogOpen = () => {
-    updateDialogContent(
-      <_Content aria-labelledby={contactDialogA11yId} role="dialog">
-        <Text as="h2" color={Color.MONO_100} id={contactDialogA11yId} typography={Typography.NORMAL16}>
-          お問い合わせ
-        </Text>
-        <Spacer height={Space * 1} />
-        <Text as="p" color={Color.MONO_100} typography={Typography.NORMAL12}>
-          {CONTACT}
-        </Text>
-      </_Content>,
-    );
-  };
+  const handleRequestToContactDialogOpen = useCallback(() => {
+    updateDialogContent(<ContactDialog />);
+  }, [updateDialogContent]);
 
-  const handleRequestToQuestionDialogOpen = () => {
-    updateDialogContent(
-      <_Content aria-labelledby={questionDialogA11yId} role="dialog">
-        <Text as="h2" color={Color.MONO_100} id={questionDialogA11yId} typography={Typography.NORMAL16}>
-          Q&A
-        </Text>
-        <Spacer height={Space * 1} />
-        <Text as="p" color={Color.MONO_100} typography={Typography.NORMAL12}>
-          {QUESTION}
-        </Text>
-      </_Content>,
-    );
-  };
+  const handleRequestToQuestionDialogOpen = useCallback(() => {
+    updateDialogContent(<QuestionDialog />);
+  }, [updateDialogContent]);
 
-  const handleRequestToCompanyDialogOpen = () => {
-    updateDialogContent(
-      <_Content aria-labelledby={companyDialogA11yId} role="dialog">
-        <Text as="h2" color={Color.MONO_100} id={companyDialogA11yId} typography={Typography.NORMAL16}>
-          運営会社
-        </Text>
-        <Spacer height={Space * 1} />
-        <Text as="p" color={Color.MONO_100} typography={Typography.NORMAL12}>
-          {COMPANY}
-        </Text>
-      </_Content>,
-    );
-  };
+  const handleRequestToCompanyDialogOpen = useCallback(() => {
+    updateDialogContent(<CompanyDialog />);
+  }, [updateDialogContent]);
 
-  const handleRequestToOverviewDialogOpen = () => {
-    updateDialogContent(
-      <_Content aria-labelledby={overviewDialogA11yId} role="dialog">
-        <Text as="h2" color={Color.MONO_100} id={overviewDialogA11yId} typography={Typography.NORMAL16}>
-          Cyber TOONとは
-        </Text>
-        <Spacer height={Space * 1} />
-        <Text as="p" color={Color.MONO_100} typography={Typography.NORMAL12}>
-          {OVERVIEW}
-        </Text>
-      </_Content>,
-    );
-  };
+  const handleRequestToOverviewDialogOpen = useCallback(() => {
+    updateDialogContent(<OverviewDialog />);
+  }, [updateDialogContent]);
 
   return (
     <Box as="footer" backgroundColor={Color.Background} p={Space * 1}>
