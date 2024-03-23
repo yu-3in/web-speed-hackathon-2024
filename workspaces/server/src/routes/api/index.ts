@@ -12,6 +12,7 @@ import { internalApp } from './internal';
 import { rankingApp } from './rankings';
 import { releaseApp } from './releases';
 
+// TODO: なんか、これインスタンスがいっぱいあるのでは？
 const app = new OpenAPIHono();
 
 app.doc31('/api/v1/specification', {
