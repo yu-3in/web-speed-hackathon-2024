@@ -29,7 +29,6 @@ const SearchResult: React.FC<Props> = ({ keyword }) => {
       const normalizedBookName = normalizeString(book.name);
       const normalizedBookNameRuby = normalizeString(book.nameRuby);
 
-      // どちらか一方でも条件を満たす場合はtrueを返す
       return normalizedBookName.includes(normalizedKeyword) || normalizedBookNameRuby.includes(normalizedKeyword);
     });
   }, [books, keyword]);

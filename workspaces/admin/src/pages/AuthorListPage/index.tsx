@@ -18,14 +18,14 @@ import {
   Tr,
 } from '@chakra-ui/react';
 import { useFormik } from 'formik';
-import { useId, useMemo, useState } from 'react';
+import React, { Suspense, useId, useMemo, useState } from 'react';
 import { create } from 'zustand';
 
 import { useAuthorList } from '../../features/authors/hooks/useAuthorList';
-import { isContains } from '../../lib/filter/isContains';
+import { normalizeString } from '../../lib/filter/isContains';
 
-import { AuthorDetailModal } from './internal/AuthorDetailModal';
-import { CreateAuthorModal } from './internal/CreateAuthorModal';
+const AuthorDetailModal = React.lazy(() => import('./internal/AuthorDetailModal'));
+const CreateAuthorModal = React.lazy(() => import('./internal/CreateAuthorModal'));
 
 const AuthorSearchKind = {
   AuthorId: 'AuthorId',
@@ -77,13 +77,16 @@ export const AuthorListPage: React.FC = () => {
       return authorList;
     }
 
+    const normalizedKeyword = normalizeString(formik.values.query);
+
     switch (formik.values.kind) {
       case AuthorSearchKind.AuthorId: {
         return authorList.filter((author) => author.id === formik.values.query);
       }
       case AuthorSearchKind.AuthorName: {
         return authorList.filter((author) => {
-          return isContains({ query: formik.values.query, target: author.name });
+          const normalizedAuthorName = normalizeString(author.name);
+          return normalizedAuthorName.includes(normalizedKeyword);
         });
       }
       default: {
@@ -205,10 +208,14 @@ export const AuthorListPage: React.FC = () => {
       </Stack>
 
       {modalState.mode === AuthorModalMode.Detail ? (
-        <AuthorDetailModal isOpen authorId={modalState.params.authorId} onClose={() => modalState.close()} />
+        <Suspense fallback={null}>
+          <AuthorDetailModal isOpen authorId={modalState.params.authorId} onClose={() => modalState.close()} />
+        </Suspense>
       ) : null}
       {modalState.mode === AuthorModalMode.Create ? (
-        <CreateAuthorModal isOpen onClose={() => modalState.close()} />
+        <Suspense fallback={null}>
+          <CreateAuthorModal isOpen onClose={() => modalState.close()} />
+        </Suspense>
       ) : null}
     </>
   );

@@ -31,7 +31,7 @@ type Props = {
   onClose: () => void;
 };
 
-export const BookDetailModal: React.FC<Props> = ({ bookId, isOpen, onClose }) => {
+const BookDetailModal: React.FC<Props> = ({ bookId, isOpen, onClose }) => {
   const { data: episodeList } = useEpisodeList({ bookId });
   const { data: book } = useBook({ bookId });
 
@@ -118,3 +118,5 @@ export const BookDetailModal: React.FC<Props> = ({ bookId, isOpen, onClose }) =>
     </Modal>
   );
 };
+
+export default BookDetailModal;

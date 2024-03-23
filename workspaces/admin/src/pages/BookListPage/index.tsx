@@ -18,14 +18,14 @@ import {
   Tr,
 } from '@chakra-ui/react';
 import { useFormik } from 'formik';
-import { useId, useMemo, useState } from 'react';
+import React, { Suspense, useId, useMemo, useState } from 'react';
 import { create } from 'zustand';
 
 import { useBookList } from '../../features/books/hooks/useBookList';
-import { isContains } from '../../lib/filter/isContains';
+import { normalizeString } from '../../lib/filter/isContains';
 
-import { BookDetailModal } from './internal/BookDetailModal';
-import { CreateBookModal } from './internal/CreateBookModal';
+const BookDetailModal = React.lazy(() => import('./internal/BookDetailModal'));
+const CreateBookModal = React.lazy(() => import('./internal/CreateBookModal'));
 
 const BookSearchKind = {
   AuthorId: 'AuthorId',
@@ -79,16 +79,19 @@ export const BookListPage: React.FC = () => {
       return bookList;
     }
 
+    const normalizedKeyword = normalizeString(formik.values.query);
+
     switch (formik.values.kind) {
       case BookSearchKind.BookId: {
         return bookList.filter((book) => book.id === formik.values.query);
       }
       case BookSearchKind.BookName: {
         return bookList.filter((book) => {
-          return (
-            isContains({ query: formik.values.query, target: book.name }) ||
-            isContains({ query: formik.values.query, target: book.nameRuby })
-          );
+          // book.name と book.nameRuby を正規化して検索
+          const normalizedBookName = normalizeString(book.name);
+          const normalizedBookNameRuby = normalizeString(book.nameRuby);
+
+          return normalizedBookName.includes(normalizedKeyword) || normalizedBookNameRuby.includes(normalizedKeyword);
         });
       }
       case BookSearchKind.AuthorId: {
@@ -96,7 +99,9 @@ export const BookListPage: React.FC = () => {
       }
       case BookSearchKind.AuthorName: {
         return bookList.filter((book) => {
-          return isContains({ query: formik.values.query, target: book.author.name });
+          const normalizedBookName = normalizeString(book.name);
+
+          return normalizedBookName.includes(normalizedKeyword);
         });
       }
       default: {
@@ -243,9 +248,15 @@ export const BookListPage: React.FC = () => {
       </Stack>
 
       {modalState.mode === BookModalMode.Detail ? (
-        <BookDetailModal isOpen bookId={modalState.params.bookId} onClose={() => modalState.close()} />
+        <Suspense fallback={null}>
+          <BookDetailModal isOpen bookId={modalState.params.bookId} onClose={() => modalState.close()} />
+        </Suspense>
       ) : null}
-      {modalState.mode === BookModalMode.Create ? <CreateBookModal isOpen onClose={() => modalState.close()} /> : null}
+      {modalState.mode === BookModalMode.Create ? (
+        <Suspense fallback={null}>
+          <CreateBookModal isOpen onClose={() => modalState.close()} />{' '}
+        </Suspense>
+      ) : null}
     </>
   );
 };
