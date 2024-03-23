@@ -8,7 +8,7 @@ export const cacheControlMiddleware = createMiddleware(async (c, next) => {
     c.res.headers.append('Cache-Control', 'max-age=31536000');
     return;
   } else {
-    c.res.headers.append('Cache-Control', 'private');
-    c.res.headers.append('Cache-Control', 'no-store');
+    // c.res.headers.append('Cache-Control', 'private');
+    // c.res.headers.append('Cache-Control', 'no-store');
   }
 });
