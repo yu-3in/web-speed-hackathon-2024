@@ -15,7 +15,7 @@ const _Separator = styled.img`
 
 export const Separator: React.FC = () => {
   const wrapperRef = useRef<HTMLDivElement>(null);
-  const [imgUrl, setImgUrl] = useState<string | null>(null);
+  const [imgUrl, setImgUrl] = useState<string>();
 
   useEffect(() => {
     const width = wrapperRef.current?.clientWidth;
@@ -43,7 +43,7 @@ export const Separator: React.FC = () => {
 
   return (
     <_Wrapper ref={wrapperRef}>
-      {imgUrl != null ? <_Separator aria-hidden={true} height={1} src={imgUrl} width="100%" /> : null}
+      <_Separator aria-hidden={true} height={1} src={imgUrl} width="100%" />
     </_Wrapper>
   );
 };
