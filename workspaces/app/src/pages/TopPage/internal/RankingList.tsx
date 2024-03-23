@@ -10,7 +10,7 @@ const RankingList: React.FC = () => {
   return (
     <>
       {rankingList.map((ranking) => (
-        <Suspense key={ranking.id}>
+        <Suspense key={ranking.id} fallback={null}>
           <RankingCard book={ranking.book} />
         </Suspense>
       ))}
