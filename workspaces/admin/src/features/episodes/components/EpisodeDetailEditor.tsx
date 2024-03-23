@@ -42,6 +42,22 @@ type Props = {
   episode?: GetEpisodeResponse;
 };
 
+const validationSchema = yup.object().shape({
+  chapter: yup.number().required('章を入力してください'),
+  description: yup.string().required('あらすじを入力してください'),
+  image: yup
+    .mixed((image): image is File => image instanceof File)
+    .optional()
+    .test('is-supported-image', '対応していない画像形式です', async (image) => {
+      return image == null || (await isSupportedImage(image));
+    }),
+  name: yup.string().required('エピソード名を入力してください'),
+  nameRuby: yup
+    .string()
+    .required('エピソード名（ふりがな）を入力してください')
+    .matches(/^[\p{Script_Extensions=Hiragana}]+$/u, 'ふりがなはひらがなで入力してください'),
+});
+
 export const EpisodeDetailEditor: React.FC<Props> = ({ book, episode }) => {
   const navigate = useNavigate();
 
@@ -91,21 +107,7 @@ export const EpisodeDetailEditor: React.FC<Props> = ({ book, episode }) => {
         });
       }
     },
-    validationSchema: yup.object().shape({
-      chapter: yup.number().required('章を入力してください'),
-      description: yup.string().required('あらすじを入力してください'),
-      image: yup
-        .mixed((image): image is File => image instanceof File)
-        .optional()
-        .test('is-supported-image', '対応していない画像形式です', async (image) => {
-          return image == null || (await isSupportedImage(image));
-        }),
-      name: yup.string().required('エピソード名を入力してください'),
-      nameRuby: yup
-        .string()
-        .required('エピソード名（ふりがな）を入力してください')
-        .matches(/^[\p{Script_Extensions=Hiragana}]+$/u, 'ふりがなはひらがなで入力してください'),
-    }),
+    validationSchema,
   });
 
   const thumbnailInputRef = useRef<HTMLInputElement>(null);

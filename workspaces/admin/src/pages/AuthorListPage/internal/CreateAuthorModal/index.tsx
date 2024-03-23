@@ -30,6 +30,20 @@ export type Props = {
   onClose: () => void;
 };
 
+const validationSchema = yup.object().shape({
+  description: yup.string().required('プロフィールを入力してください'),
+  image: yup
+    .mixed((image): image is File => image instanceof File)
+    .required('画像を選択してください')
+    .test('is-supported-image', '対応していない画像形式です', async (image) => {
+      return image == null || (await isSupportedImage(image));
+    }),
+  name: yup
+    .string()
+    .required('作者名を入力してください')
+    .matches(/^[\p{Script_Extensions=Katakana}\s]+$/u, '作者名はカタカナで入力してください'),
+});
+
 const CreateAuthorModal: React.FC<Props> = ({ isOpen, onClose }) => {
   const { mutate: createAuthor } = useCreateAuthor();
 
@@ -53,19 +67,7 @@ const CreateAuthorModal: React.FC<Props> = ({ isOpen, onClose }) => {
         },
       );
     },
-    validationSchema: yup.object().shape({
-      description: yup.string().required('プロフィールを入力してください'),
-      image: yup
-        .mixed((image): image is File => image instanceof File)
-        .required('画像を選択してください')
-        .test('is-supported-image', '対応していない画像形式です', async (image) => {
-          return image == null || (await isSupportedImage(image));
-        }),
-      name: yup
-        .string()
-        .required('作者名を入力してください')
-        .matches(/^[\p{Script_Extensions=Katakana}\s]+$/u, '作者名はカタカナで入力してください'),
-    }),
+    validationSchema,
   });
 
   const [avatorUrl, updateAvatorUrl] = useState<string | undefined>(undefined);

@@ -28,6 +28,21 @@ type BookEditContentProps = {
   onEditComplete: () => void;
 };
 
+const validationSchema = yup.object().shape({
+  description: yup.string().required('概要を入力してください'),
+  image: yup
+    .mixed((image): image is File => image instanceof File)
+    .optional()
+    .test('is-supported-image', '対応していない画像形式です', async (image) => {
+      return image == null || (await isSupportedImage(image));
+    }),
+  name: yup.string().required('作品名を入力してください'),
+  nameRuby: yup
+    .string()
+    .required('作品名のふりがなを入力してください')
+    .matches(/^[\p{Script_Extensions=Hiragana}]+$/u, '作品名のふりがなはひらがなで入力してください'),
+});
+
 export const BookEditContent: React.FC<BookEditContentProps> = ({ book, onEditComplete }) => {
   const { mutate: updateBook } = useUpdateBook();
 
@@ -55,20 +70,7 @@ export const BookEditContent: React.FC<BookEditContentProps> = ({ book, onEditCo
         },
       );
     },
-    validationSchema: yup.object().shape({
-      description: yup.string().required('概要を入力してください'),
-      image: yup
-        .mixed((image): image is File => image instanceof File)
-        .optional()
-        .test('is-supported-image', '対応していない画像形式です', async (image) => {
-          return image == null || (await isSupportedImage(image));
-        }),
-      name: yup.string().required('作品名を入力してください'),
-      nameRuby: yup
-        .string()
-        .required('作品名のふりがなを入力してください')
-        .matches(/^[\p{Script_Extensions=Hiragana}]+$/u, '作品名のふりがなはひらがなで入力してください'),
-    }),
+    validationSchema,
   });
 
   const [avatorUrl, updateAvatorUrl] = useState<string | undefined>(undefined);

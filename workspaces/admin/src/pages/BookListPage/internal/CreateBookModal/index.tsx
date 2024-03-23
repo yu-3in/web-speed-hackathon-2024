@@ -34,6 +34,23 @@ type Props = {
   onClose: () => void;
 };
 
+const validationSchema = yup.object().shape({
+  authorId: yup.string().uuid('作者を選択してください').required('作者を選択してください'),
+  description: yup.string().required('概要を入力してください'),
+  image: yup
+    .mixed((image): image is File => image instanceof File)
+    .optional()
+    .test('is-supported-image', '対応していない画像形式です', async (image) => {
+      return image == null || (await isSupportedImage(image));
+    }),
+  name: yup.string().required('作品名を入力してください'),
+  nameRuby: yup
+    .string()
+    .required('作品名のふりがなを入力してください')
+    .matches(/^[\p{Script_Extensions=Hiragana}]+$/u, '作品名のふりがなはひらがなで入力してください'),
+  releaseId: yup.string().uuid('更新曜日を選択してください').required('更新曜日を選択してください'),
+});
+
 const CreateBookModal: React.FC<Props> = ({ isOpen, onClose }) => {
   const { data: authorList = [] } = useAuthorList();
   const { data: releaseList = [] } = useReleaseList();
@@ -66,22 +83,7 @@ const CreateBookModal: React.FC<Props> = ({ isOpen, onClose }) => {
         },
       );
     },
-    validationSchema: yup.object().shape({
-      authorId: yup.string().uuid('作者を選択してください').required('作者を選択してください'),
-      description: yup.string().required('概要を入力してください'),
-      image: yup
-        .mixed((image): image is File => image instanceof File)
-        .optional()
-        .test('is-supported-image', '対応していない画像形式です', async (image) => {
-          return image == null || (await isSupportedImage(image));
-        }),
-      name: yup.string().required('作品名を入力してください'),
-      nameRuby: yup
-        .string()
-        .required('作品名のふりがなを入力してください')
-        .matches(/^[\p{Script_Extensions=Hiragana}]+$/u, '作品名のふりがなはひらがなで入力してください'),
-      releaseId: yup.string().uuid('更新曜日を選択してください').required('更新曜日を選択してください'),
-    }),
+    validationSchema,
   });
 
   const [avatorUrl, updateAvatorUrl] = useState<string | undefined>(undefined);

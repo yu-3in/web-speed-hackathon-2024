@@ -28,6 +28,20 @@ type AuthorEditContentProps = {
   onEditComplete: () => void;
 };
 
+const validationSchema = yup.object().shape({
+  description: yup.string().required('プロフィールを入力してください'),
+  image: yup
+    .mixed((image): image is File => image instanceof File)
+    .optional()
+    .test('is-supported-image', '対応していない画像形式です', async (image) => {
+      return image == null || (await isSupportedImage(image));
+    }),
+  name: yup
+    .string()
+    .required('作者名を入力してください')
+    .matches(/^[\p{Script_Extensions=Katakana}\s]+$/u, '作者名はカタカナで入力してください'),
+});
+
 export const AuthorEditContent: React.FC<AuthorEditContentProps> = ({ author, onEditComplete }) => {
   const { mutate: updateAuhtor } = useUpdateAuthor();
 
@@ -53,19 +67,7 @@ export const AuthorEditContent: React.FC<AuthorEditContentProps> = ({ author, on
         },
       );
     },
-    validationSchema: yup.object().shape({
-      description: yup.string().required('プロフィールを入力してください'),
-      image: yup
-        .mixed((image): image is File => image instanceof File)
-        .optional()
-        .test('is-supported-image', '対応していない画像形式です', async (image) => {
-          return image == null || (await isSupportedImage(image));
-        }),
-      name: yup
-        .string()
-        .required('作者名を入力してください')
-        .matches(/^[\p{Script_Extensions=Katakana}\s]+$/u, '作者名はカタカナで入力してください'),
-    }),
+    validationSchema,
   });
 
   const [avatorUrl, updateAvatorUrl] = useState<string | undefined>(undefined);
