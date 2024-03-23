@@ -47,6 +47,7 @@ export const HeroImage: React.FC = () => {
 
     const textureLoader = new TextureLoader();
 
+    // TODO: ここえぐすぎ
     textureLoader.load(IMAGE_SRC, (texture) => {
       const geometry = new PlaneGeometry(2, 2);
       const material = new ShaderMaterial({
