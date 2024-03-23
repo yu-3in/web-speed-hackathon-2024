@@ -23,7 +23,7 @@ export const ComicViewerPage = ({ pageImageId }: Props) => {
   useAsync(async () => {
     const image = new Image();
     image.src = getImageUrl({
-      format: 'jpg',
+      format: 'webp',
       imageId: pageImageId,
     });
     await image.decode();
