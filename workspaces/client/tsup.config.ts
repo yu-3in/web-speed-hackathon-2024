@@ -26,7 +26,7 @@ export default defineConfig(async (): Promise<Options[]> => {
       },
       env: {
         API_URL: '',
-        NODE_ENV: process.env['NODE_ENV'] || 'development',
+        NODE_ENV: process.env['NODE_ENV'] || 'production',
         PATH_LIST: IMAGE_PATH_LIST.join(',') || '',
       },
       esbuildOptions(options) {
@@ -36,6 +36,7 @@ export default defineConfig(async (): Promise<Options[]> => {
         };
         options.publicPath = '/';
       },
+      // TODO: polyfillは消したいなの気持ち
       esbuildPlugins: [
         polyfillNode({
           globals: {
@@ -53,15 +54,15 @@ export default defineConfig(async (): Promise<Options[]> => {
         '.json?file': 'file',
         '.wasm': 'binary',
       },
-      metafile: true,
-      minify: false,
+      metafile: false,
+      minify: true,
       outDir: OUTPUT_DIR,
       platform: 'browser',
-      shims: true,
-      sourcemap: 'inline',
+      shims: false,
+      sourcemap: process.env['NODE_ENV'] === 'development',
       splitting: false,
-      target: ['chrome58', 'firefox57', 'safari11', 'edge18'],
-      treeshake: false,
+      target: ['chrome123'],
+      treeshake: true,
     },
   ];
 });

@@ -1,4 +1,5 @@
 import { encoding } from '@hapi/accept';
+// TODO: cjsを倒したい
 import { ZstdInit } from '@oneidentity/zstd-js/asm/index.cjs.js';
 import { createMiddleware } from 'hono/factory';
 
