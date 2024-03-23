@@ -1,5 +1,3 @@
-import './setup';
-
 import React, { Suspense } from 'react';
 
 import { GlobalStyle } from './foundation/styles/GlobalStyle';

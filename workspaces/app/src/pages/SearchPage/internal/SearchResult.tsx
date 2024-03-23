@@ -1,25 +1,36 @@
 import { Suspense, useMemo } from 'react';
 
-import type { GetBookListResponse } from '@wsh-2024/schema/src/api/books/GetBookListResponse';
-
 import { BookListItem } from '../../../features/book/components/BookListItem';
+import { useBookList } from '../../../features/book/hooks/useBookList';
 import { Flex } from '../../../foundation/components/Flex';
 import { Text } from '../../../foundation/components/Text';
 import { Color, Typography } from '../../../foundation/styles/variables';
-import { isContains } from '../../../lib/filter/isContains';
+import { normalizeString } from '../../../lib/filter/isContains';
 
 type Props = {
-  books: GetBookListResponse;
   keyword: string;
 };
 
-export const SearchResult: React.FC<Props> = ({ books, keyword }) => {
+const SearchResult: React.FC<Props> = ({ keyword }) => {
+  const { data: books } = useBookList({ query: {} });
+
   const relatedBooks = useMemo(() => {
+    // キーワードが空の場合は何もフィルタリングしない
     if (keyword === '') {
       return books;
     }
+
+    // キーワードを事前に正規化
+    const normalizedKeyword = normalizeString(keyword);
+
+    // 正規化されたキーワードを使ってフィルタリング
     return books.filter((book) => {
-      return isContains({ query: keyword, target: book.name }) || isContains({ query: keyword, target: book.nameRuby });
+      // book.name と book.nameRuby を正規化して検索
+      const normalizedBookName = normalizeString(book.name);
+      const normalizedBookNameRuby = normalizeString(book.nameRuby);
+
+      // どちらか一方でも条件を満たす場合はtrueを返す
+      return normalizedBookName.includes(normalizedKeyword) || normalizedBookNameRuby.includes(normalizedKeyword);
     });
   }, [books, keyword]);
 
@@ -44,3 +55,13 @@ export const SearchResult: React.FC<Props> = ({ books, keyword }) => {
     </Flex>
   );
 };
+
+const SearchResultWithSuspense: React.FC<Props> = ({ keyword }) => {
+  return (
+    <Suspense fallback={null}>
+      <SearchResult keyword={keyword} />
+    </Suspense>
+  );
+};
+
+export { SearchResultWithSuspense as SearchResult };
