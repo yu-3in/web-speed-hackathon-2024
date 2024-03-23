@@ -1,16 +1,19 @@
 import { useId } from 'react';
 import styled from 'styled-components';
 
-import { COMPANY } from '../../constants/Company';
 import { Color, Space, Typography } from '../../styles/variables';
 import { Spacer } from '../Spacer';
 import { Text } from '../Text';
+
+import { useFooterContent } from './useFooterContent';
 
 const _Content = styled.section`
   white-space: pre-line;
 `;
 
 const CompanyDialog: React.FC = () => {
+  const { data } = useFooterContent({ type: 'company' });
+  const { content } = data;
   const companyDialogA11yId = useId();
 
   return (
@@ -20,7 +23,7 @@ const CompanyDialog: React.FC = () => {
       </Text>
       <Spacer height={Space * 1} />
       <Text as="p" color={Color.MONO_100} typography={Typography.NORMAL12}>
-        {COMPANY}
+        {content}
       </Text>
     </_Content>
   );

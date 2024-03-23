@@ -1,16 +1,19 @@
 import { useId } from 'react';
 import styled from 'styled-components';
 
-import { TERM } from '../../constants/Term';
 import { Color, Space, Typography } from '../../styles/variables';
 import { Spacer } from '../Spacer';
 import { Text } from '../Text';
+
+import { useFooterContent } from './useFooterContent';
 
 const _Content = styled.section`
   white-space: pre-line;
 `;
 
 const TermDialog: React.FC = () => {
+  const { data } = useFooterContent({ type: 'term' });
+  const { content } = data;
   const termDialogA11yId = useId();
 
   return (
@@ -20,8 +23,7 @@ const TermDialog: React.FC = () => {
       </Text>
       <Spacer height={Space * 1} />
       <Text as="p" color={Color.MONO_100} typography={Typography.NORMAL12}>
-        {/* TODO: 文字が大きいのでどうにかしたい */}
-        {TERM}
+        {content}
       </Text>
     </_Content>
   );
