@@ -15,6 +15,7 @@ type Props = {
 };
 
 export const Spacer: React.FC<Props> = ({ height, width }) => {
+  // TODO: なんでmount待っているの？調べる
   const [mounted, toggleMounted] = useBoolean(false);
 
   useMount(() => {
