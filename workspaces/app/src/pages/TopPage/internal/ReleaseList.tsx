@@ -8,7 +8,6 @@ import { Space } from '../../../foundation/styles/variables';
 import { getDayOfWeekStr } from '../../../lib/date/getDayOfWeekStr';
 
 const ReleaseList: React.FC = () => {
-  // TODO: momentやめる
   const todayStr = getDayOfWeekStr(new Date());
   const { data: release } = useRelease({ params: { dayOfWeek: todayStr } });
 
