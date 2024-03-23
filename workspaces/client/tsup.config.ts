@@ -60,9 +60,9 @@ export default defineConfig(async (): Promise<Options[]> => {
       platform: 'browser',
       shims: false,
       sourcemap: process.env['NODE_ENV'] === 'development',
-      splitting: false,
+      splitting: true,
       target: ['chrome123'],
-      treeshake: false,
+      treeshake: true,
     },
   ];
 });
