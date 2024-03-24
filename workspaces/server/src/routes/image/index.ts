@@ -10,6 +10,7 @@ import { z } from 'zod';
 import { IMAGES_PATH } from '../../constants/paths';
 
 const app = new Hono();
+const cacheMap = new Map<string, Buffer>();
 
 // MIMEタイプのマッピング
 const IMAGE_MIME_TYPE: Record<string, string> = {
@@ -63,6 +64,20 @@ app.get(
       mimeType = IMAGE_MIME_TYPE[format] || mimeType;
 
       const buffer = await image.toBuffer();
+
+      const { ext: reqImgExt, name: reqImgId } = path.parse(c.req.valid('param').imageFile);
+
+      // 画像のキャッシュ
+      const resImgFormat = reqImgExt.slice(1) || 'webp';
+      const cacheKey = `${reqImgId}-${resImgFormat}-${c.req.valid('query').width}-${c.req.valid('query').height}`;
+
+      if (cacheMap.has(cacheKey)) {
+        c.header('Content-Type', IMAGE_MIME_TYPE[resImgFormat]);
+        return c.body(cacheMap.get(cacheKey)!);
+      }
+
+      cacheMap.set(cacheKey, buffer);
+
       c.header('Content-Type', mimeType);
       return c.body(buffer);
     } catch (error) {

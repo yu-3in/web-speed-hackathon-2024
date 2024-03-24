@@ -4,7 +4,7 @@ import type { RouteParams } from 'regexparam';
 import { styled } from 'styled-components';
 
 import { useAuthor } from '../../features/author/hooks/useAuthor';
-import { BookListItem } from '../../features/book/components/BookListItem';
+import { BookList } from '../../features/book/components/BookList';
 import { Box } from '../../foundation/components/Box';
 import { Flex } from '../../foundation/components/Flex';
 import { Image } from '../../foundation/components/Image';
@@ -13,7 +13,6 @@ import { Spacer } from '../../foundation/components/Spacer';
 import { Text } from '../../foundation/components/Text';
 import { useImage } from '../../foundation/hooks/useImage';
 import { Color, Space, Typography } from '../../foundation/styles/variables';
-import { BookList } from '../../features/book/components/BookList';
 
 const _HeadingWrapper = styled.section`
   display: grid;

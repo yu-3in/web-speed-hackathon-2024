@@ -29,14 +29,6 @@ const EpisodeList: React.FC<Props> = ({ bookId, isShownNavbar = false }) => {
 
   return (
     <>
-      {isShownNavbar && (
-        <BottomNavigator
-          bookId={bookId}
-          isFavorite={isFavorite}
-          latestEpisodeId={latestEpisode?.id ?? ''}
-          onClickFav={handleFavClick}
-        />
-      )}
       <Flex align="center" as="ul" direction="column" justify="center" width="100%">
         {episodeList.map((episode) => (
           <Suspense key={episode.id} fallback={null}>
@@ -52,6 +44,15 @@ const EpisodeList: React.FC<Props> = ({ bookId, isShownNavbar = false }) => {
           </>
         )}
       </Flex>
+
+      {isShownNavbar && (
+        <BottomNavigator
+          bookId={bookId}
+          isFavorite={isFavorite}
+          latestEpisodeId={latestEpisode?.id ?? ''}
+          onClickFav={handleFavClick}
+        />
+      )}
     </>
   );
 };

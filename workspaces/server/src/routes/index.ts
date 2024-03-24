@@ -1,6 +1,7 @@
 import { Hono } from 'hono';
 import { compress } from 'hono/compress';
 import { cors } from 'hono/cors';
+import { etag } from 'hono/etag';
 import { HTTPException } from 'hono/http-exception';
 import { secureHeaders } from 'hono/secure-headers';
 
@@ -25,6 +26,7 @@ app.use(
   }),
 );
 
+app.use(etag());
 app.use(compress());
 app.use(cacheControlMiddleware);
 

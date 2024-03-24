@@ -3,7 +3,6 @@ import { useParams } from 'react-router-dom';
 import type { RouteParams } from 'regexparam';
 import invariant from 'tiny-invariant';
 
-import { useEpisode } from '../../features/episode/hooks/useEpisode';
 import { Box } from '../../foundation/components/Box';
 import { Separator } from '../../foundation/components/Separator';
 import { Space } from '../../foundation/styles/variables';
@@ -16,12 +15,10 @@ const EpisodeDetailPage: React.FC = () => {
   invariant(bookId);
   invariant(episodeId);
 
-  const { data: episode } = useEpisode({ params: { episodeId } });
-
   return (
     <Box>
       <section aria-label="漫画ビューアー">
-        <ComicViewer episodeId={episode.id} />
+        <ComicViewer episodeId={episodeId} />
       </section>
 
       <Separator />
