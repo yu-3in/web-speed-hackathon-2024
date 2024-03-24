@@ -13,9 +13,7 @@ const FeatureList: React.FC = () => {
     <Box height={206} maxWidth="100%" overflowX="scroll" overflowY="hidden">
       <Flex align="stretch" direction="row" gap={Space * 2} justify="flex-start">
         {featureList.map((feature) => (
-          <Suspense key={feature.id} fallback={null}>
-            <FeatureCard book={feature.book} />
-          </Suspense>
+          <FeatureCard key={feature.id} book={feature.book} />
         ))}
       </Flex>
     </Box>

@@ -72,7 +72,6 @@ app.get(
       const cacheKey = `${reqImgId}-${resImgFormat}-${c.req.valid('query').width}-${c.req.valid('query').height}`;
 
       if (cacheMap.has(cacheKey)) {
-        console.log('Cache hit!', cacheKey, 'size:', cacheMap.get(cacheKey)!.length, 'bytes');
         c.header('Content-Type', IMAGE_MIME_TYPE[resImgFormat]);
         return c.body(cacheMap.get(cacheKey)!);
       }
