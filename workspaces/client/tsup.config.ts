@@ -44,7 +44,7 @@ export default defineConfig(async (): Promise<Options[]> => {
           },
         }),
       ],
-      format: ['esm', 'cjs'],
+      format: 'esm',
       loader: {
         '.wasm': 'binary',
       },
