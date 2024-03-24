@@ -1,19 +1,16 @@
 import { useId } from 'react';
 import styled from 'styled-components';
 
+import { QUESTION } from '../../../constants/question';
 import { Color, Space, Typography } from '../../styles/variables';
 import { Spacer } from '../Spacer';
 import { Text } from '../Text';
-
-import { useFooterContent } from './useFooterContent';
 
 const _Content = styled.section`
   white-space: pre-line;
 `;
 
 const QuestionDialog: React.FC = () => {
-  const { data } = useFooterContent({ type: 'question' });
-  const { content } = data;
   const questionDialogA11yId = useId();
 
   return (
@@ -23,7 +20,7 @@ const QuestionDialog: React.FC = () => {
       </Text>
       <Spacer height={Space * 1} />
       <Text as="p" color={Color.MONO_100} typography={Typography.NORMAL12}>
-        {content}
+        {QUESTION}
       </Text>
     </_Content>
   );

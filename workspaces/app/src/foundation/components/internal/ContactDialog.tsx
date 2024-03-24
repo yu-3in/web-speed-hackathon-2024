@@ -1,19 +1,16 @@
 import { useId } from 'react';
 import styled from 'styled-components';
 
+import { CONTACT } from '../../../constants/contact';
 import { Color, Space, Typography } from '../../styles/variables';
 import { Spacer } from '../Spacer';
 import { Text } from '../Text';
-
-import { useFooterContent } from './useFooterContent';
 
 const _Content = styled.section`
   white-space: pre-line;
 `;
 
 const ContactDialog: React.FC = () => {
-  const { data } = useFooterContent({ type: 'contact' });
-  const { content } = data;
   const contactDialogA11yId = useId();
 
   return (
@@ -23,7 +20,7 @@ const ContactDialog: React.FC = () => {
       </Text>
       <Spacer height={Space * 1} />
       <Text as="p" color={Color.MONO_100} typography={Typography.NORMAL12}>
-        {content}
+        {CONTACT}
       </Text>
     </_Content>
   );
