@@ -44,13 +44,13 @@ export const CoverSection: React.FC = () => {
         <_Image
           alt="Cyber TOON"
           sizes="(max-width: 1024px) 100vw, 1024px"
-          src="/assets/hero-1024.avif"
+          src="/assets/hero-1024.webp"
           srcSet={[
-            '/assets/hero-260.avif 260w',
-            '/assets/hero-390.avif 390w',
-            '/assets/hero-530.avif 530w',
-            '/assets/hero-768.avif 768w',
-            '/assets/hero-1024.avif 1024w',
+            '/assets/hero-256.webp 256w',
+            '/assets/hero-384.webp 384w',
+            '/assets/hero-512.webp 512w',
+            '/assets/hero-768.webp 768w',
+            '/assets/hero-1024.webp 1024w',
           ].join(',')}
         />
       </_ImageWrapper>
