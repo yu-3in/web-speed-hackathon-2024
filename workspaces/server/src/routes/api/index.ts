@@ -11,6 +11,7 @@ import { imageApp } from './images';
 import { internalApp } from './internal';
 import { rankingApp } from './rankings';
 import { releaseApp } from './releases';
+import { footerApp } from './footer';
 
 // TODO: なんか、これインスタンスがいっぱいあるのでは？
 const app = new OpenAPIHono();
@@ -40,5 +41,6 @@ app.route('/', rankingApp);
 app.route('/', authApp);
 
 app.route('/', internalApp);
+app.route('/', footerApp);
 
 export { app as apiApp };

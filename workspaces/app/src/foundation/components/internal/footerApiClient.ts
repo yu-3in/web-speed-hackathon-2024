@@ -1,4 +1,7 @@
+import { inject } from 'regexparam';
+
 import type { DomainSpecificApiClientInterface } from '../../../lib/api/DomainSpecificApiClientInterface';
+import { apiClient } from '../../../lib/api/apiClient';
 
 type FooterApiClient = DomainSpecificApiClientInterface<{
   fetch: [{ type: string }, GetFooterTextResponse];
@@ -8,22 +11,14 @@ export type GetFooterTextResponse = {
   content: string;
 };
 
-const API_URL = process.env['API_URL'] || '/';
-
 export const footerApiClient: FooterApiClient = {
-  fetch: async ({ type }) => {
-    const response = await fetch(`${API_URL}assets/contents/${type}.txt`);
+  fetch: async (params) => {
+    const response = await apiClient.get<GetFooterTextResponse>(inject('/api/v1/footer/:type', params));
 
-    if (!response.ok) {
-      throw new Error(`Failed to fetch: ${response.status} ${response.statusText}`);
-    }
-
-    const content = await response.text();
-
-    return { content };
+    return response.data;
   },
   fetch$$key: (options) => ({
-    requestUrl: `/assets/contents/${options.type}.txt`,
+    requestUrl: '/api/v1/footer/:type',
     ...options,
   }),
 };
