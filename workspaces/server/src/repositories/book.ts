@@ -14,6 +14,8 @@ import type { PatchBookRequestParams } from '@wsh-2024/schema/src/api/books/Patc
 import type { PatchBookResponse } from '@wsh-2024/schema/src/api/books/PatchBookResponse';
 import type { PostBookRequestBody } from '@wsh-2024/schema/src/api/books/PostBookRequestBody';
 import type { PostBookResponse } from '@wsh-2024/schema/src/api/books/PostBookResponse';
+import type { SearchBooksRequestQuery } from '@wsh-2024/schema/src/api/books/SearchBooksRequest';
+import type { SearchBooksResponse } from '@wsh-2024/schema/src/api/books/SearchBooksResponse';
 import { author, book, episode, episodePage, feature, ranking } from '@wsh-2024/schema/src/models';
 
 import { getDatabase } from '../database/drizzle';
@@ -23,6 +25,7 @@ type BookRepositoryInterface = {
   delete(options: { params: DeleteBookRequestParams }): Promise<Result<DeleteBookResponse, HTTPException>>;
   read(options: { params: GetBookRequestParams }): Promise<Result<GetBookResponse, HTTPException>>;
   readAll(options: { query: GetBookListRequestQuery }): Promise<Result<GetBookListResponse, HTTPException>>;
+  search(options: { query: SearchBooksRequestQuery }): Promise<Result<SearchBooksResponse, HTTPException>>;
   update(options: {
     body: PatchBookRequestBody;
     params: PatchBookRequestParams;
@@ -146,6 +149,46 @@ class BookRepository implements BookRepositoryInterface {
         return err(cause);
       }
       return err(new HTTPException(500, { cause, message: `Failed to read book list.` }));
+    }
+  }
+
+  async search(options: { query: SearchBooksRequestQuery }): Promise<Result<SearchBooksResponse, HTTPException>> {
+    try {
+      const data = await getDatabase().query.book.findMany({
+        columns: {
+          description: true,
+          id: true,
+          name: true,
+          nameRuby: true,
+        },
+
+        where(book, { like }) {
+          console.log('options.query', options.query);
+          console.log('options.query.nameRuby', options.query.nameRuby);
+          if (options.query.name) {
+            return like(book.name, `%${options.query.name}%`);
+          }
+          if (options.query.nameRuby) {
+            return like(book.nameRuby, `%${options.query.nameRuby}%`);
+          }
+          return;
+        },
+        with: {
+          image: {
+            columns: {
+              alt: true,
+              id: true,
+            },
+          },
+        },
+      });
+
+      return ok(data);
+    } catch (cause) {
+      if (cause instanceof HTTPException) {
+        return err(cause);
+      }
+      return err(new HTTPException(500, { cause, message: `Failed to search book list.` }));
     }
   }
 
