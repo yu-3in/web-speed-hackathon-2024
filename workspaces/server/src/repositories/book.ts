@@ -163,14 +163,14 @@ class BookRepository implements BookRepositoryInterface {
         },
 
         where(book, { like }) {
-          console.log('options.query', options.query);
-          console.log('options.query.nameRuby', options.query.nameRuby);
           if (options.query.name) {
             return like(book.name, `%${options.query.name}%`);
           }
+
           if (options.query.nameRuby) {
             return like(book.nameRuby, `%${options.query.nameRuby}%`);
           }
+
           return;
         },
         with: {

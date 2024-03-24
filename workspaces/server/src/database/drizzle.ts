@@ -10,18 +10,22 @@ let sqlite: Database.Database | null = null;
 let database: BetterSQLite3Database<typeof schema> | null = null;
 
 export function initializeDatabase() {
-  if (sqlite != null) {
-    sqlite.close();
-    sqlite = null;
-    database = null;
+  try {
+    if (sqlite != null) {
+      sqlite.close();
+      sqlite = null;
+      database = null;
+    }
+
+    sqlite = new Database(DATABASE_PATH, {
+      readonly: false,
+    });
+    database = drizzle(sqlite, { schema });
+  } catch (error) {
+    console.error('Database initialization failed:', error);
+    throw error;
   }
-
-  sqlite = new Database(DATABASE_PATH, {
-    readonly: false,
-  });
-  database = drizzle(sqlite, { schema });
 }
-
 export function getDatabase() {
   if (sqlite == null || database == null) {
     throw new Error('Database is not initialized');

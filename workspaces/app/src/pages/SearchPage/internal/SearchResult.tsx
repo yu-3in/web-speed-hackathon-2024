@@ -11,9 +11,21 @@ type Props = {
   keyword: string;
 };
 
+function isKana(str: string) {
+  return /^[\u3040-\u30FF]+$/.test(str);
+}
+
 const SearchResult: React.FC<Props> = ({ keyword }) => {
+  const keywordNormalized = normalizeString(keyword);
+  let query = {};
+  if (isKana(keywordNormalized)) {
+    query = { nameRuby: keywordNormalized };
+  } else {
+    query = { name: keywordNormalized };
+  }
+
   const { data: books } = useSearchBooks({
-    query: { name: normalizeString(keyword), nameRuby: normalizeString(keyword) },
+    query,
   });
 
   return (
