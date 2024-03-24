@@ -57,10 +57,10 @@ const EpisodeList: React.FC<Props> = ({ bookId, isShownNavbar = false }) => {
   );
 };
 
-const EpisodeWithSuspense: React.FC<Props> = ({ bookId }) => {
+const EpisodeWithSuspense: React.FC<Props> = (props) => {
   return (
     <Suspense fallback={null}>
-      <EpisodeList bookId={bookId} />
+      <EpisodeList {...props} />
     </Suspense>
   );
 };
