@@ -1,5 +1,5 @@
 export async function registerServiceWorker() {
   await navigator.serviceWorker
-    .register('/serviceworker.mjs', { updateViaCache: 'none' })
+    .register('/serviceworker.js', { updateViaCache: 'none' })
     .then(() => navigator.serviceWorker.ready);
 }
